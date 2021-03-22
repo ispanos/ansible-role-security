@@ -1,6 +1,6 @@
 # Ansible Role: Security (Basics)
 
-[![CI](https://github.com/geerlingguy/ansible-role-security/workflows/CI/badge.svg?event=push)](https://github.com/geerlingguy/ansible-role-security/actions?query=workflow%3ACI)
+[![CI](https://github.com/ispanos/ansible-role-security/workflows/CI/badge.svg?event=push)](https://github.com/ispanos/ansible-role-security/actions?query=workflow%3ACI)
 
 **First, a major, MAJOR caveat**: the security of your servers is YOUR responsibility. If you think simply including this role and adding a firewall makes a server secure, then you're mistaken. Read up on Linux, network, and application security, and know that no matter how much you know, you can always make every part of your stack more secure.
 
@@ -44,6 +44,9 @@ The port through which you'd like SSH to be accessible. The default is port 22, 
 
 Security settings for SSH authentication. It's best to leave these set to `"no"`, but there are times (especially during initial server configuration or when you don't have key-based authentication in place) when one or all may be safely set to `'yes'`. **NOTE: It is _very_ important that you quote the 'yes' or 'no' values. Failure to do so may lock you out of your server.**
 
+[//]: # (`security_ssh_pub_key_authentication: "yes"` is the default.)
+[//]: # (`security_ssh_use_pam: "no"` Not sure if I should disable it.)
+
     security_sshd_state: started
 
 The state of the SSH daemon. Typically this should remain `started`.
@@ -52,10 +55,26 @@ The state of the SSH daemon. Typically this should remain `started`.
 
 The state of the `restart ssh` handler. Typically this should remain `restarted`.
 
+---
+
+    security_machine_admins:
+        default:
+            username: admin
+            password: '$6$ZNjKXVPieEdp2$xodvDHyPSY0pSbaPWpDwvuD59Zuwco6ZKHWwalEc34WiJjgYH8BW9/GchU1OOI7C8RUY3NHEtAW0A/5.bnNPE0'
+            ssh_pub_key_url: https://github.com/none.keys
+            shell: /bin/bash
+
+Create server administrators. The new user will not have the name "default". `default.username` is the name of the user in the system.
+Default username is "adming, password is "admin", created with `mkpasswd --method=sha-512`
+However, "ssh_pub_key_url" is not valid and you won't be able to log in
+if password authentication is disabled.
+
     security_sudoers_passwordless: []
     security_sudoers_passworded: []
 
-A list of users who should be added to the sudoers file so they can run any command as root (via `sudo`) either without a password or requiring a password for each command, respectively.
+A list of users (not usernames) who should be added to the sudoers file so they can run any command as root (via `sudo`) either without a password or requiring a password for each command, respectively.
+
+---
 
     security_autoupdate_enabled: true
 
@@ -100,9 +119,17 @@ None.
 
 *Inside `vars/main.yml`*:
 
+    security_machine_admins:
+
+      ispanos:
+        username: yiannis
+        password: '$6$YmGrvyFWlS$F6TZeSuV3Opc11gUF4WYOSPAFFg0rmBpBJ0AXXVxsnPKVCm0guFjHmg/oUwib3/ZbPtkPWhrWcIDAayHoJrOi1'
+        ssh_pub_key_url: https://github.com/ispanos.keys
+
     security_sudoers_passworded:
-      - johndoe
-      - deployacct
+      - ispanos
+
+    security_sshd_state: restarted
 
 ## License
 
@@ -110,4 +137,4 @@ MIT (Expat) / BSD
 
 ## Author Information
 
-This role was created in 2014 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).
+This role was originally created in 2014 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).

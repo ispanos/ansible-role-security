@@ -9,6 +9,9 @@
 # SSH
 - include_tasks: ssh.yml
 
+# Create admins
+- include_tasks: admins.yml
+
 # Autoupdate
 - include_tasks: autoupdate-RedHat.yml
   when:

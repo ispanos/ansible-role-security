@@ -9,6 +9,8 @@ security_ssh_gss_api_authentication: "no"
 security_ssh_x11_forwarding: "no"
 security_sshd_state: started
 security_ssh_restart_handler_state: restarted
+security_ssh_pub_key_authentication: "yes"
+security_ssh_use_pam: "no"
 
 security_sudoers_passwordless: []
 security_sudoers_passworded: []
@@ -24,3 +26,13 @@ security_autoupdate_mail_on_error: true
 
 security_fail2ban_enabled: true
 security_fail2ban_custom_configuration_template: "jail.local.j2"
+
+
+# Server administrators
+# TODO README
+security_machine_admins:
+  default:
+    username: admin
+    password: '$6$ZNjKXVPieEdp2$xodvDHyPSY0pSbaPWpDwvuD59Zuwco6ZKHWwalEc34WiJjgYH8BW9/GchU1OOI7C8RUY3NHEtAW0A/5.bnNPE0'
+    ssh_pub_key_url: https://github.com/none.keys
+    shell: /bin/bash

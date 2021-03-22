@@ -3,7 +3,7 @@ dependencies: []
 
 galaxy_info:
   role_name: security
-  author: geerlingguy
+  author: geerlingguy, ispanos
   description: Security software installation and configuration.
   company: "Midwestern Mac, LLC"
   license: "license (BSD, MIT)"
