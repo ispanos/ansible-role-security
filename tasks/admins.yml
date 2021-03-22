@@ -1,46 +1,41 @@
 ---
-# TODO README
+# TODO
+- name: "Create user {{ item }}"
+  ansible.builtin.user:
+    name: "{{ item.username }}"
+    shell: "{{ item.shell }}"
+    create_home: true
+    append: true
+    groups: sudo
+    password: "{{ item.password }}"
+loop: "{{ lookup('dict', security_machine_admins) }}"
 
-- name: Create server administrators
-  block:
+- name: "Set {{ item }}'s authorized key"
+  ansible.posix.authorized_key:
+    user: "{{ item.username }}"
+    state: present
+    key: "{{ item.ssh_pub_key_url }}"
+loop: "{{ lookup('dict', security_machine_admins) }}"
 
-    - name: "Create user {{ item }}"
-      ansible.builtin.user:
-        name: "{{ item.username }}"
-        shell: "{{ item.shell }}"
-        create_home: true
-        append: true
-        groups: sudo
-        password: "{{ item.password }}"
+# TODO  Create separate sudoer file for each user
+- name: Add configured user accounts to passwordless sudoers.
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: '^{{ item.username }}'
+    line: '{{ item.username }} ALL=(ALL) NOPASSWD: ALL'
+    state: present
+    validate: 'visudo -cf %s'
+    mode: 0644
+  with_items: "{{ security_sudoers_passwordless }}"
+  when: security_sudoers_passwordless | length > 0
 
-    - name: "Set {{ item }}'s authorized key"
-      ansible.posix.authorized_key:
-        user: "{{ item.username }}"
-        state: present
-        key: "{{ item.ssh_pub_key_url }}"
-
-    # TODO  Create separate sudoer file for each user
-
-    - name: Add configured user accounts to passwordless sudoers.
-      lineinfile:
-        dest: /etc/sudoers
-        regexp: '^{{ item.username }}'
-        line: '{{ item.username }} ALL=(ALL) NOPASSWD: ALL'
-        state: present
-        validate: 'visudo -cf %s'
-        mode: 0644
-      with_items: "{{ security_sudoers_passwordless }}"
-      when: security_sudoers_passwordless | length > 0
-
-    - name: Add configured user accounts to passworded sudoers.
-      lineinfile:
-        dest: /etc/sudoers
-        regexp: '^{{ item.username }}'
-        line: '{{ item.username }} ALL=(ALL) ALL'
-        state: present
-        validate: 'visudo -cf %s'
-        mode: 0644
-      with_items: "{{ security_sudoers_passworded }}"
-      when: security_sudoers_passworded | length > 0
-
-  loop: "{{ lookup('dict', security_machine_admins) }}"
+- name: Add configured user accounts to passworded sudoers.
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: '^{{ item.username }}'
+    line: '{{ item.username }} ALL=(ALL) ALL'
+    state: present
+    validate: 'visudo -cf %s'
+    mode: 0644
+  with_items: "{{ security_sudoers_passworded }}"
+  when: security_sudoers_passworded | length > 0
