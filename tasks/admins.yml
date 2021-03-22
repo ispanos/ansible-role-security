@@ -9,6 +9,7 @@
     #groups: sudo
     password: "{{ item.password }}"
   loop: "{{ security_machine_admins }}"
+  when: security_machine_admins | length > 0
 
 - name: "Set {{ item }}'s authorized key"
   ansible.posix.authorized_key:
@@ -16,6 +17,7 @@
     state: present
     key: "{{ item.ssh_pub_key_url }}"
   loop: "{{ security_machine_admins }}"
+  when: security_machine_admins | length > 0
 
 # TODO  Create separate sudoer file for each user
 - name: Add configured user accounts to passwordless sudoers.

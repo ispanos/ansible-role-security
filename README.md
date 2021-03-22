@@ -9,6 +9,7 @@ That being said, this role performs some basic security configuration on RedHat 
   - Install software to monitor bad SSH access (fail2ban)
   - Configure SSH to be more secure (disabling root login, requiring key-based authentication, and allowing a custom SSH port to be set)
   - Set up automatic updates (if configured to do so)
+  - Create new administrators and adds their public keys. All fields must be filled if you decide to create a new user this way.
 
 There are a few other things you may or may not want to do (which are not included in this role) to make sure your servers are more secure, like:
 
@@ -60,13 +61,12 @@ The state of the `restart ssh` handler. Typically this should remain `restarted`
     security_machine_admins:
       - username: admin
         password: '$6$ZNjKXVPieEdp2$xodvDHyPSY0pSbaPWpDwvuD59Zuwco6ZKHWwalEc34WiJjgYH8BW9/GchU1OOI7C8RUY3NHEtAW0A/5.bnNPE0'
-        ssh_pub_key_url: https://github.com/none.keys
+        ssh_pub_key_url: https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub
         shell: /bin/bash
 
 Create server administrators.
 Default username is "admin, password is "admin", created with `mkpasswd --method=sha-512`
-However, "ssh_pub_key_url" is not valid and you won't be able to log in
-if password authentication is disabled.
+`ssh_pub_key_url` is Vagrant's default [insecure public key](https://github.com/hashicorp/vagrant/tree/main/keys)
 
     security_sudoers_passwordless: []
     security_sudoers_passworded: []
@@ -119,7 +119,7 @@ None.
 *Inside `vars/main.yml`*:
 
     security_machine_admins:
-      - username: yiannis
+      - username: ispanos
         password: '$6$YmGrvyFWlS$F6TZeSuV3Opc11gUF4WYOSPAFFg0rmBpBJ0AXXVxsnPKVCm0guFjHmg/oUwib3/ZbPtkPWhrWcIDAayHoJrOi1'
         ssh_pub_key_url: https://github.com/ispanos.keys
         shell: /bin/bash
