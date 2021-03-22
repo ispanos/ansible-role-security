@@ -31,8 +31,7 @@ security_fail2ban_custom_configuration_template: "jail.local.j2"
 # Server administrators
 # TODO README
 security_machine_admins:
-  default:
-    username: admin
+  - username: admin
     password: '$6$ZNjKXVPieEdp2$xodvDHyPSY0pSbaPWpDwvuD59Zuwco6ZKHWwalEc34WiJjgYH8BW9/GchU1OOI7C8RUY3NHEtAW0A/5.bnNPE0'
     ssh_pub_key_url: https://github.com/none.keys
     shell: /bin/bash

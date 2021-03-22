@@ -58,21 +58,20 @@ The state of the `restart ssh` handler. Typically this should remain `restarted`
 ---
 
     security_machine_admins:
-        default:
-            username: admin
-            password: '$6$ZNjKXVPieEdp2$xodvDHyPSY0pSbaPWpDwvuD59Zuwco6ZKHWwalEc34WiJjgYH8BW9/GchU1OOI7C8RUY3NHEtAW0A/5.bnNPE0'
-            ssh_pub_key_url: https://github.com/none.keys
-            shell: /bin/bash
+      - username: admin
+        password: '$6$ZNjKXVPieEdp2$xodvDHyPSY0pSbaPWpDwvuD59Zuwco6ZKHWwalEc34WiJjgYH8BW9/GchU1OOI7C8RUY3NHEtAW0A/5.bnNPE0'
+        ssh_pub_key_url: https://github.com/none.keys
+        shell: /bin/bash
 
-Create server administrators. The new user will not have the name "default". `default.username` is the name of the user in the system.
-Default username is "adming, password is "admin", created with `mkpasswd --method=sha-512`
+Create server administrators.
+Default username is "admin, password is "admin", created with `mkpasswd --method=sha-512`
 However, "ssh_pub_key_url" is not valid and you won't be able to log in
 if password authentication is disabled.
 
     security_sudoers_passwordless: []
     security_sudoers_passworded: []
 
-A list of users (not usernames) who should be added to the sudoers file so they can run any command as root (via `sudo`) either without a password or requiring a password for each command, respectively.
+A list of users who should be added to the sudoers file so they can run any command as root (via `sudo`) either without a password or requiring a password for each command, respectively.
 
 ---
 
@@ -120,11 +119,10 @@ None.
 *Inside `vars/main.yml`*:
 
     security_machine_admins:
-
-      ispanos:
-        username: yiannis
+      - username: yiannis
         password: '$6$YmGrvyFWlS$F6TZeSuV3Opc11gUF4WYOSPAFFg0rmBpBJ0AXXVxsnPKVCm0guFjHmg/oUwib3/ZbPtkPWhrWcIDAayHoJrOi1'
         ssh_pub_key_url: https://github.com/ispanos.keys
+        shell: /bin/bash
 
     security_sudoers_passworded:
       - ispanos
