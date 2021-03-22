@@ -33,5 +33,5 @@ security_fail2ban_custom_configuration_template: "jail.local.j2"
 security_machine_admins:
   - username: admin
     password: '$6$ZNjKXVPieEdp2$xodvDHyPSY0pSbaPWpDwvuD59Zuwco6ZKHWwalEc34WiJjgYH8BW9/GchU1OOI7C8RUY3NHEtAW0A/5.bnNPE0'
-    ssh_pub_key_url: https://github.com/none.keys
+    ssh_pub_key_url: https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub
     shell: /bin/bash

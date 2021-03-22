@@ -6,7 +6,7 @@
     shell: "{{ item.shell }}"
     create_home: true
     append: true
-    groups: sudo
+    #groups: sudo
     password: "{{ item.password }}"
   loop: "{{ security_machine_admins }}"
 
