@@ -8,14 +8,14 @@
     append: true
     groups: sudo
     password: "{{ item.password }}"
-  loop: "{{ lookup('dict', security_machine_admins) }}"
+  loop: "{{ lookup('dict', security_machine_admins, wantlist=True) }}"
 
 - name: "Set {{ item }}'s authorized key"
   ansible.posix.authorized_key:
     user: "{{ item.username }}"
     state: present
     key: "{{ item.ssh_pub_key_url }}"
-  loop: "{{ lookup('dict', security_machine_admins) }}"
+  loop: "{{ lookup('dict', security_machine_admins, wantlist=True) }}"
 
 # TODO  Create separate sudoer file for each user
 - name: Add configured user accounts to passwordless sudoers.
