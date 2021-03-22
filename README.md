@@ -114,7 +114,7 @@ None.
       vars_files:
         - vars/main.yml
       roles:
-        - geerlingguy.security
+        - ispanos.security
 
 *Inside `vars/main.yml`*:
 
