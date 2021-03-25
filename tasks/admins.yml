@@ -23,8 +23,8 @@
 - name: Add configured user accounts to passwordless sudoers.
   lineinfile:
     dest: /etc/sudoers
-    regexp: '^{{ item.username }}'
-    line: '{{ item.username }} ALL=(ALL) NOPASSWD: ALL'
+    regexp: '^{{ item }}'
+    line: '{{ item }} ALL=(ALL) NOPASSWD: ALL'
     state: present
     validate: 'visudo -cf %s'
     mode: 0644
@@ -34,8 +34,8 @@
 - name: Add configured user accounts to passworded sudoers.
   lineinfile:
     dest: /etc/sudoers
-    regexp: '^{{ item.username }}'
-    line: '{{ item.username }} ALL=(ALL) ALL'
+    regexp: '^{{ item }}'
+    line: '{{ item }} ALL=(ALL) ALL'
     state: present
     validate: 'visudo -cf %s'
     mode: 0644
